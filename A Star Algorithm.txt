@@ -1,0 +1,83 @@
+from queue import PriorityQueue
+
+class Graph:
+    def __init__(self):
+        self.edges = {}
+        self.weights = {}
+
+    def neighbors(self, node):
+        return self.edges[node]
+        
+    def get_heucost(self ,from_child):
+        return self.heu_weights[(from_child)]
+    
+    def get_cost(self, from_node, to_node):
+        return self.weights[(from_node + to_node)]
+
+
+def ucs(graph, start, goal):
+    visited = set()
+    queue = PriorityQueue()
+    queue.put((0, start , [start]))
+    while queue:
+        pathcost,node, path = queue.get()
+        if node not in visited:
+            visited.add(node)
+            if node == goal:
+                
+                
+                print("Path cost for A*", ucpath)
+                return
+            for child in graph.neighbors(node):
+                if child not in visited:
+                    total_cost = graph.get_cost(node, child)+ pathcost 
+                    
+                    final_heu_cost = total_cost + graph.get_heucost(child) 
+                  
+                    
+                    ucpath = path +[child]
+                    
+                    queue.put((final_heu_cost, child, ucpath ))
+             
+    
+    
+graph = Graph()
+graph.edges = {'Arid' :['Zerind' ,'Timisoara' , 'Sibiu' ] ,
+                'Zerind' :['Oradea' , 'Arid' ],
+                'Timisoara' :['Arid' , 'Lugoj' ]
+              ,'Sibiu' :['Arid' , 'Oradea' , 'Fagaras' , 'RimnicuVilcea' ],
+                'Oradea':['Zerind' , 'Sibiu' ],
+              'Lugoj':['Timisoara' , 'Mehadia'],
+              'RimnicuVilcea':['Sibiu' , 'Pitesti' , 'Craiova' ]
+              ,'Mehadia':['Lugoj' , 'Dobreta' ],
+              'Craiova':['Dobreta' , 'RimnicuVilcea' , 'Pitesti' ],
+              'Pitesti':['RimnicuVilcea' , 'Craiova' , 'Bucharest' ],
+              'Fagaras':['Sibiu' , 'Bucharest' ],
+              'Dobreta':['Mehadia' , 'Craiova' ],
+              'Bucharest':['Fagaras' , 'Pitesti' , 'Giurgiu'],
+              'Giurgiu':['Bucharest']}
+               
+               
+graph.weights =          {'AridZerind' : 75,  'AridTimisoara': 118,  'AridSibiu': 140,
+                         'ZerindOradea': 71 , 'ZerindArid': 75,
+                         'TimisoaraArid': 118 ,'TimisoaraLugoj' :111,
+                         'SibiuArid': 140 , 'SibiuOradea': 151 ,'SibiuFagaras': 99 ,'SibiuRimnicuVilcea' :80 ,
+                         'OradeaZerind': 71 , 'OradeaSibiu' :151,
+                         'LugojTimisoara': 111 ,'LugojMehadia' :70,
+                         'RimnicuVilceaSibiu': 80, 'RimnicuVilceaPitesti': 97 , 'RimnicuVilceaCraiova': 146,
+                         'MehadiaLugoj': 70 ,'MehadiaDobreta' :75,
+                         'CraiovaDobreta': 120, 'CraiovaRimnicuVilcea': 146 ,'CraiovaPitesti': 138,
+                         'PitestiRimnicuVilcea': 97, 'PitestiCraiova': 138,  'PitestiBucharest': 101,
+                         'FagarasSibiu': 99, 'FagarasBucharest': 211,
+                         'DobretaMehadia': 75 , 'DobretaCraiova': 120,
+                         'BucharestFagaras' :211, 'BucharestPitesti': 101 , 'BucharestGiurgiu': 90,
+                         'GiurgiuBucharest': 90 }
+
+graph.heu_weights = {'Arid' :366,'Zerind': 374,'Timisoara':329,'Sibiu': 253,'Oradea' :380,
+                          'Lugoj':244,'RimnicuVilcea':193,'Mehadia':241 , 'Craiova':160,
+                          'Pitesti':101,'Fagaras':176,'Dobreta':242,'Bucharest':0,'Giurgiu':77}
+ucs(graph, 'Arid', 'Bucharest')
+
+
+
+
